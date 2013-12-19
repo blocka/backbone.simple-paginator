@@ -65,7 +65,7 @@
       }
 
       this.models = this.origModels.slice();
-      this.reset(this.models.slice(from, to));
+      this.reset(this.models.slice(from, to),{paginate:true});
       this.trigger('turn', this.models, this);
     },
 
@@ -144,10 +144,11 @@
       delete this.origModels;
       return Backbone.Collection.prototype.fetch.call(this, options);
     },
-
     reset: function(models,options) {
-      delete this.origModels;
-      return Backbone.Collection.prototype.fetch.call(this, models, options);
+      if (!options || !options.paginate) {
+        delete this.origModels;
+      }
+      return Backbone.Collection.prototype.reset.apply(this,arguments);
     }
 
   });
